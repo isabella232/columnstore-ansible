@@ -9,8 +9,9 @@ maxscale_version: 2.5
 # MariaDB Enterprise Token
 enterprise_token: your_enterprise_token   # Change Me
 
-# Columnstore CMAPI key
+# Columnstore Settings
 api_key: your_api_key   # Change Me
+high_availability: true
 
 # Database Credentials
 admin_pass: DemoPassword1~
