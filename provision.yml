@@ -1,5 +1,7 @@
 ---
 
+## Wait For Servers To Boot
+
 - hosts: "pm,mx"
   become: yes
   become_user: root
@@ -9,6 +11,8 @@
     - name: "Waiting For Servers To Initialize"
       wait_for_connection:
 
+## Bootstrap For Ansible
+
 - hosts: "pm,mx"
   become: yes
   become_user: root
@@ -17,12 +21,26 @@
     - 'inventory/group_vars/distro/{{ ansible_distribution|lower }}{{ ansible_distribution_major_version }}.yml'
 
   pre_tasks:
-    - name: "Bootstrapping System For Ansible Use"
+    - name: "Bootstrapping System For Ansible"
       raw: '{{ pre_task }}'
 
-- import_playbook: includes/prepare.yml
-- import_playbook: includes/glusterfs.yml
-- import_playbook: includes/install.yml
-- import_playbook: includes/cluster.yml
-- import_playbook: includes/validate.yml
-- import_playbook: includes/maxscale.yml
+## Include Sub Playbooks
+
+- name: "Preparing The Servers"
+  import_playbook: includes/prepare.yml
+
+- name: "Setting Up GlusterFS"
+  import_playbook: includes/glusterfs.yml
+  when: high_availability == true
+
+- name: "Installing MariaDB"
+  import_playbook: includes/install.yml
+
+- name: "Setting Up Cluster"
+  import_playbook: includes/cluster.yml
+
+- name: "Validating Installation"
+  import_playbook: includes/validate.yml
+
+- name: "Configuring MaxScale"
+  import_playbook: includes/maxscale.yml
