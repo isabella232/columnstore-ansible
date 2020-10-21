@@ -1,0 +1,17 @@
+pm1 ansible_host=${public-ip1}
+pm2 ansible_host=${public-ip2}
+pm3 ansible_host=${public-ip3}
+mx1 ansible_host=${public-ip4}
+
+pm1_private ansible_host=${private-ip1}
+pm2_private ansible_host=${private-ip2}
+pm3_private ansible_host=${private-ip3}
+mx1_private ansible_host=${private-ip4}
+
+[pm]
+pm1
+pm2
+pm3
+
+[mx]
+mx1

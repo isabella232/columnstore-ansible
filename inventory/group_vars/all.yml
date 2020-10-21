@@ -1,0 +1,31 @@
+---
+# OS Configuration
+run_upgrade: true
+
+# Version Configuration
+mariadb_version: 10.5
+maxscale_version: 2.5
+
+# MariaDB Enterprise Token
+enterprise_token: your_enterprise_token   # Change Me
+
+# Columnstore CMAPI key
+api_key: your_api_key   # Change Me
+
+# Database Credentials
+admin_pass: DemoPassword1~
+admin_user: admin
+cej_pass: DemoPassword1~
+cej_user: cej
+maxscale_user: maxscale
+maxscale_pass: DemoPassword1~
+repli_pass: DemoPassword1~
+repli_user: replica
+
+# Storage Manager Configuration
+use_s3: false
+s3_endpoint: s3.amazonaws.com
+s3_region: us-west-2
+s3_bucket: democluster
+s3_access_key_id: your_access_key   # Change Me
+s3_secret_access_key: your_secret_key   # Change Me
