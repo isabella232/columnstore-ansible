@@ -17,7 +17,7 @@ And grab your enterprise token here:
 
 This automation project will create a 3 node **MariaDB** cluster with the **ColumnStore** engine enabled as well as a **MaxScale** load balancer.
 
-By manually creating a */inventory/hosts* file, you may skip the **Terraform** portion of this tutorial and use the **Ansible** playbook directly to provision your existing machines.
+By manually creating an */inventory/hosts* file, you may skip the **Terraform** portion of this tutorial and use the **Ansible** playbook directly to provision your existing machines.
 
 #### Tested On AWS
 AMI Name|AMI ID
