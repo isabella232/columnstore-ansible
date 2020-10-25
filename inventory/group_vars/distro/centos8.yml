@@ -23,7 +23,7 @@ maxscale: maxscale
 mlocate: mlocate
 nano: nano
 python_dev: platform-python-devel
-pre_task: dnf -y install epel-release && yum -y install glibc-locale-source glibc-langpack-en python2 python3 python2-PyMySQL python3-PyMySQL
+pre_task: dnf -y install epel-release && dnf -y install glibc-locale-source glibc-langpack-en python2 python3 python2-PyMySQL python3-PyMySQL
 python3_boto: python3-boto3
 python3_requests: python3-requests
 server_cnf: /etc/my.cnf.d/server.cnf
