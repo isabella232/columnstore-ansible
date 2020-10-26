@@ -8,6 +8,10 @@
 
   tasks:
 
+  - name: "Setting Fact"
+    set_fact:
+      first_octet: "{{ hostvars.pm1_private.ansible_host.split('.')[0:1][0] }}.%"
+
   - name: "Turn Off Strict Password"
     mysql_variables:
       variable: strict_password_validation
@@ -22,10 +26,10 @@
       login_unix_socket: '{{ mariadb_socket }}'
     no_log: true
 
-  - name: "Adding '{{ admin_user }}'@'%'"
+  - name: "Adding '{{ admin_user }}'@'{{ first_octet }}'"
     mysql_user:
       name: '{{ admin_user }}'
-      host: '%'
+      host: '{{ first_octet }}'
       password: '{{ admin_pass }}'
       update_password: on_create
       priv: '*.*:ALL,GRANT'
@@ -44,7 +48,7 @@
       login_unix_socket: '{{ mariadb_socket }}'
     no_log: true
 
-  - name: "Adding {{ cej_user }}@localhost User To Database"
+  - name: "Adding '{{ cej_user }}'@'localhost' User To Database"
     mysql_user:
       name: '{{ cej_user }}'
       host: 'localhost'
@@ -55,10 +59,10 @@
       login_unix_socket: '{{ mariadb_socket }}'
     no_log: true
 
-  - name: "Adding {{ cej_user }}@% User To Database"
+  - name: "Adding '{{ cej_user }}'@'{{ first_octet }}' User To Database"
     mysql_user:
       name: '{{ cej_user }}'
-      host: '%'
+      host: '{{ first_octet }}'
       password: '{{ cej_pass }}'
       update_password: on_create
       priv: '*.*:SELECT'
@@ -67,7 +71,7 @@
     no_log: true
 
 # Workaround: Ansible mysql_user module does not yet work with MariaDB 10.5.x privileges
-  - name: "Adding '{{ maxscale_user }}'@'%'"
+  - name: "Adding '{{ maxscale_user }}'@'{{ first_octet }}'"
     shell: |
       mariadb -e "GRANT BINLOG ADMIN,
                   READ_ONLY ADMIN,
@@ -77,35 +81,19 @@
                   REPLICATION SLAVE ADMIN,
                   REPLICATION SLAVE,
                   SHOW DATABASES ON *.*
-                  TO '{{ maxscale_user }}'@'%'
+                  TO '{{ maxscale_user }}'@'{{ first_octet }}'
                   IDENTIFIED BY '{{ maxscale_pass }}';
                   GRANT SELECT ON mysql.*
-                  TO '{{ maxscale_user }}'@'%';"
+                  TO '{{ maxscale_user }}'@'{{ first_octet }}';"
 
 # Workaround: Ansible mysql_user module does not yet work with MariaDB 10.5.x privileges
-  - name: "Adding '{{ maxscale_user }}'@'localhost'"
-    shell: |
-      mariadb -e "GRANT BINLOG ADMIN,
-                  READ_ONLY ADMIN,
-                  RELOAD,
-                  REPLICATION CLIENT,
-                  REPLICATION MASTER ADMIN,
-                  REPLICATION SLAVE ADMIN,
-                  REPLICATION SLAVE,
-                  SHOW DATABASES ON *.*
-                  TO '{{ maxscale_user }}'@'localhost'
-                  IDENTIFIED BY '{{ maxscale_pass }}';
-                  GRANT SELECT ON mysql.*
-                  TO '{{ maxscale_user }}'@'localhost';"
-
-# Workaround: Ansible mysql_user module does not yet work with MariaDB 10.5.x privileges
-  - name: "Adding '{{ repli_user }}'@'%'"
+  - name: "Adding '{{ repli_user }}'@'{{ first_octet }}'"
     shell: |
       mariadb -e "GRANT REPLICATION SLAVE ADMIN,
                   REPLICATION SLAVE,
                   REPLICATION CLIENT,
                   REPLICATION MASTER ADMIN ON *.*
-                  TO '{{ repli_user }}'@'%'
+                  TO '{{ repli_user }}'@'{{ first_octet }}'
                   IDENTIFIED BY '{{ repli_pass }}';"
 
 # Workaround: Ansible mysql_user module does not yet work with MariaDB 10.5.x privileges
@@ -129,9 +117,6 @@
 
   - name: "Updating Columnstore.xml With Cross Engine Support Password"
     command: mcsSetConfig CrossEngineSupport Password '{{ cej_pass }}'
-
-  - name: "Updating Columnstore.xml With TotalUmMemory"
-    command: mcsSetConfig HashJoin TotalUmMemory "25%"
 
 - hosts: "pm2,pm3"
   become: yes

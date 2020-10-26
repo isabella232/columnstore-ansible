@@ -1,0 +1,71 @@
+---
+
+- hosts: "pm1"
+  become: yes
+  become_user: root
+  vars_files:
+    - '../inventory/group_vars/distro/{{ ansible_distribution|lower }}{{ ansible_distribution_major_version }}.yml'
+
+  tasks:
+
+  - name: "Creating Metadata Folder"
+    file:
+      path: '{{ efs_mount_dir }}'
+      state: directory
+
+  - name: "Deleting EFS Volume"
+    efs:
+      state: absent
+      name: columnstore
+      access_key: '{{ aws_access_key_id }}'
+      secret_key: '{{ aws_secret_access_key }}'
+      region: '{{ aws_region }}'
+
+  - name: "Creating StorageManager EFS Volume"
+    efs:
+      state: present
+      name: storagemanager
+      access_key: '{{ aws_access_key_id }}'
+      secret_key: '{{ aws_secret_access_key }}'
+      region: '{{ aws_region }}'
+      encrypt: yes
+      tags:
+        Name: storagemanager
+        purpose: metadata
+      targets:
+        - subnet_id: '{{ efs_subnet }}'
+          security_groups: [ '{{ efs_security_group }}' ]
+
+- hosts: "pm"
+  become: yes
+  become_user: root
+  vars_files:
+    - '../inventory/group_vars/distro/{{ ansible_distribution|lower }}{{ ansible_distribution_major_version }}.yml'
+
+  tasks:
+
+  - name: "Getting EFS Info"
+    efs_info:
+      access_key: '{{ aws_access_key_id }}'
+      secret_key: '{{ aws_secret_access_key }}'
+      region: '{{ aws_region }}'
+    register: efs_info
+    delegate_to: 'pm1'
+    run_once: true
+
+  - name: "Getting EFS File System ID"
+    set_fact:
+      file_system_id: '{{ efs_info.efs[0].file_system_id }}'
+    delegate_to: 'pm1'
+    run_once: true
+
+  - name: "Waiting For EFS To Be Available"
+    shell: sleep 20
+
+  - name: "Mounting EFS Volume"
+    mount:
+      name: '{{ efs_mount_dir }}'
+      src: '{{ efs_zone }}.{{ file_system_id }}.efs.{{ efs_region }}.amazonaws.com:/'
+      fstype: nfs4
+      opts: nfsvers=4.1
+      state: mounted

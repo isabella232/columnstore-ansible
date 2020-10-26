@@ -28,11 +28,11 @@
       name: '*'
       state: latest
       update_cache: yes
-    when: run_upgrade == 'true'
+    when: run_upgrade == true
 
   - name: "Rebooting To Apply Updates"
     reboot:
-    when: run_upgrade == 'true'
+    when: run_upgrade == true
 
   - name: "Installing Some Prerequisites"
     package:
@@ -47,6 +47,7 @@
       - '{{ jq }}'
       - '{{ mlocate }}'
       - '{{ nano }}'
+      - '{{ nfs_utils }}'
       - '{{ python_dev }}'
       - '{{ python3_requests }}'
       - '{{ tar }}'
@@ -101,7 +102,7 @@
   - name: "Adjusting System net.core.netdev_max_backlog"
     sysctl:
       name: net.core.netdev_max_backlog
-      value: '2500'
+      value: '30000'
       state: present
 
   - name: "Adding Custom Mappings To /etc/hosts"

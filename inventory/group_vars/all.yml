@@ -11,7 +11,7 @@ enterprise_token: your_enterprise_token   # Change Me
 
 # Columnstore Settings
 api_key: your_api_key   # Change Me
-high_availability: true
+shared_volumes: efs  # efs or glusterfs
 
 # Database Credentials
 admin_pass: DemoPassword1~
@@ -23,10 +23,19 @@ maxscale_pass: DemoPassword1~
 repli_pass: DemoPassword1~
 repli_user: replica
 
+# AWS Configuration
+aws_region: us-west-2
+aws_access_key_id: your_access_key # Change Me
+aws_secret_access_key: your_secret_key # Change Me
+
 # Storage Manager Configuration
 use_s3: false
 s3_endpoint: s3.amazonaws.com
-s3_region: us-west-2
 s3_bucket: democluster
-s3_access_key_id: your_access_key   # Change Me
-s3_secret_access_key: your_secret_key   # Change Me
+
+# EFS Configuration
+efs_mount_dir: /var/lib/columnstore/storagemanager
+efs_region: us-west-2
+efs_zone: us-west-2a
+efs_subnet: your_aws_subnet # Change Me
+efs_security_group: your_aws_security_group # Change Me

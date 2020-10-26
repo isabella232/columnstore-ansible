@@ -31,7 +31,11 @@
 
 - name: "Setting Up GlusterFS"
   import_playbook: includes/glusterfs.yml
-  when: high_availability == true
+  when: shared_volumes == 'glusterfs'
+
+- name: "Setting Up EFS"
+  import_playbook: includes/efs.yml
+  when: shared_volumes == 'efs'
 
 - name: "Installing MariaDB"
   import_playbook: includes/install.yml

@@ -22,6 +22,7 @@ mariadb_socket: /var/lib/mysql/mysql.sock
 maxscale: maxscale
 mlocate: mlocate
 nano: nano
+nfs_utils: nfs-utils
 python_dev: python-devel
 pre_task: yum -y install epel-release && yum -y install python2 python3 python2-PyMySQL python3-PyMySQL
 python3_boto: python-boto3

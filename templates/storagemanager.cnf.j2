@@ -91,7 +91,7 @@ common_prefix_depth = 3
 # if using a private cloud storage system.  Bucket has to be set to
 # something though.  Obviously, do not change these after running
 # postConfigure, or SM will not be able to find your data.
-region = {{ s3_region }}
+region = {{ aws_region }}
 bucket = {{ s3_bucket }}
 
 # Specify the endpoint to connect to if using an S3 compatible object
@@ -107,8 +107,8 @@ endpoint = {{ s3_endpoint }}
 # Put your HMAC access keys here.  Keys can also be set through the
 # environment vars AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY.
 # If set, SM will use these values and ignore the envvars.
-aws_access_key_id = {{ s3_access_key_id }}
-aws_secret_access_key = {{ s3_secret_access_key }}
+aws_access_key_id = {{ aws_access_key_id }}
+aws_secret_access_key = {{ aws_secret_access_key }}
 
 # If you want StorageManager to assume an IAM role to use for its S3
 # accesses, specify the name of the role in iam_role_name.  The name

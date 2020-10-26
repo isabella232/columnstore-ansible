@@ -48,7 +48,6 @@
       - '{{ mariadb_client }}'
       - '{{ mariadb_server }}'
       - '{{ mariadb_backup }}'
-      - '{{ mariadb_cracklib }}'
       - '{{ mariadb_columnstore }}'
 
   - name: "Configuring Storagemanager"
@@ -82,13 +81,14 @@
       block: |
         character_set_server = utf8
         collation_server = utf8_general_ci
-        log_bin = /var/lib/mysql/mariadb-bin
-        log_bin_index = /var/lib/mysql/mariadb-bin.index
-        relay_log = /var/lib/mysql/mariadb-relay
-        relay_log_index = /var/lib/mysql/mariadb-relay.index
+        log_bin = /var/log/mariadb/mariadb-bin
+        log_bin_index = /var/log/mariadb/mariadb-bin.index
+        log_error = /var/log/mariadb/maridb-error.log
+        relay_log = /var/log/mariadb/mariadb-relay
+        relay_log_index = /var/log/mariadb/mariadb-relay.index
         log_slave_updates = ON
         gtid_strict_mode = ON
-        columnstore_use_import_for_batchinsert=ALWAYS
+        columnstore_use_import_for_batchinsert=ON
 
   - name: "Enabling MariaDB Server"
     systemd:
