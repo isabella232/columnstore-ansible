@@ -1,6 +1,6 @@
 ---
 # OS Configuration
-run_upgrade: true
+run_upgrade: false
 
 # Version Configuration
 mariadb_version: 10.5
@@ -11,7 +11,7 @@ enterprise_token: your_enterprise_token   # Change Me
 
 # Columnstore Settings
 api_key: your_api_key   # Change Me
-shared_volumes: efs  # efs or glusterfs
+shared_volumes: glusterfs  # efs, glusterfs, none
 
 # Database Credentials
 admin_pass: DemoPassword1~
@@ -29,12 +29,11 @@ aws_access_key_id: your_access_key # Change Me
 aws_secret_access_key: your_secret_key # Change Me
 
 # Storage Manager Configuration
-use_s3: false
+use_s3: true
 s3_endpoint: s3.amazonaws.com
 s3_bucket: democluster
 
 # EFS Configuration
-efs_mount_dir: /var/lib/columnstore/storagemanager
 efs_region: us-west-2
 efs_zone: us-west-2a
 efs_subnet: your_aws_subnet # Change Me
