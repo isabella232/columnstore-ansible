@@ -43,8 +43,8 @@
         Name: '{{ item }}'
         purpose: high-availability
       targets:
-        - subnet_id: '{{ efs_subnet }}'
-          security_groups: [ '{{ efs_security_group }}' ]
+        - subnet_id: '{{ aws_subnet }}'
+          security_groups: [ '{{ aws_security_group }}' ]
     loop:
         - data1
         - data2
@@ -83,7 +83,7 @@
   - name: "Mounting EFS Volumes"
     mount:
       name: '/var/lib/columnstore/{{ item.name }}'
-      src: '{{ efs_zone }}.{{ item.file_system_id }}.efs.{{ efs_region }}.amazonaws.com:/'
+      src: '{{ aws_zone }}.{{ item.file_system_id }}.efs.{{ aws_region }}.amazonaws.com:/'
       fstype: nfs4
       opts: nfsvers=4.1
       state: mounted
