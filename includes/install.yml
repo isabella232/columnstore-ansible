@@ -44,7 +44,6 @@
       update_cache: yes
       disable_gpg_check: yes
     with_items:
-      - '{{ mariadb_shared }}'
       - '{{ mariadb_client }}'
       - '{{ mariadb_server }}'
       - '{{ mariadb_backup }}'
