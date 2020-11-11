@@ -1,6 +1,6 @@
 ![logo](https://raw.githubusercontent.com/mariadb-corporation/mariadb-community-columnstore-docker/master/MDB-HLogo_RGB.jpg)
 
-## MariaDB Enterprise 10.5.6 / ColumnStore 5.4.1 Cluster
+## MariaDB Enterprise 10.5.6 / ColumnStore 5.4.3 Cluster
 
 ### Prerequisites:
 
